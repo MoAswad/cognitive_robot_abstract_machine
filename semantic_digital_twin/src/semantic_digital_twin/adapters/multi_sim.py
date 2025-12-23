@@ -899,6 +899,8 @@ class MujocoGeomConverter(MujocoConverter, ShapeConverter, ABC):
             shape_props["group"] = GeomVisibilityAndCollisionType.ONLY_VISIBLE
         elif not is_visible and is_collidable:
             shape_props["group"] = GeomVisibilityAndCollisionType.ONLY_COLLIDABLE
+            shape_props["solimp"] = [0.5, 0.99, 0.0001, 0.5, 2] # TODO: Use semantic_annotation
+            shape_props["solref"] = [0.005, 1.0] # TODO: Use semantic_annotation
         return shape_props
 
 
@@ -1522,7 +1524,7 @@ class MujocoBuilder(MultiSimBuilder):
             equality.objtype = equality_semantic_annotation.obj_type
             equality.name1 = equality_semantic_annotation.name_1
             equality.name2 = equality_semantic_annotation.name_2
-            equality.data = equality_semantic_annotation.data
+            equality.data = [0.0] * 10 + [1.0] # Overwrite data because MuJoCo is weird
 
     def _find_entity(
         self,
